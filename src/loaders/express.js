@@ -7,7 +7,7 @@ import requestIp from 'request-ip';
 import config from '../config/index.js';
 
 async function expressLoader({ app }) {
-  app.set('trust proxy', config.environment !== 'production');
+  app.set('trust proxy', true);
 
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));

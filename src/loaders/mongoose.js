@@ -12,7 +12,7 @@ const mongo = {
   uri: config.database.mongoDB.uri,
 };
 
-async function connect() {
+async function mongooseLoader() {
   const connection = mongoose.connect(mongo.uri);
   // const connection = mongoose.connect(
   //   `mongodb://${mongo.username}:${mongo.password}@${mongo.hostname}:${mongo.port}/${mongo.database}?authSource=${mongo.authDB}`
@@ -30,4 +30,4 @@ async function disconnect() {
 }
 
 export { disconnect };
-export default connect;
+export default mongooseLoader;
