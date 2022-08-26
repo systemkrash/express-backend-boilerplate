@@ -61,6 +61,34 @@ const userAccountSchema = new Schema(
 userAccountSchema.set('toJSON', { getters: true, virtuals: true });
 userAccountSchema.set('toObject', { getters: true, virtuals: true });
 
+userAccountSchema.pre('save', async function (next) {
+  if (this.isModified('password')) {
+    this.password = await this.generatePasswordHash();
+  }
+
+  if (!this.is_verified) {
+    this.verification_token = this.generateEmailVerificationToken();
+  }
+
+  return next();
+});
+
+userAccountSchema.methods.generatePasswordHash = async function () {
+  const saltRounds = 10;
+
+  return await bcrypt.hash(this.password, saltRounds);
+};
+
+userAccountSchema.methods.generateEmailVerificationToken = function () {
+  return jwt.sign(
+    { useraccount_id: this.id },
+    config.emailVerificationToken.secret,
+    {
+      expiresIn: config.emailVerificationToken.expiresIn,
+    }
+  );
+};
+
 userAccountSchema.plugin(paginate);
 userAccountSchema.plugin(aggregatePaginate);
 

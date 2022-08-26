@@ -1,8 +1,8 @@
 import config from './config/index.js';
-import http from 'http';
-import https from 'https';
-import fs from 'fs';
-import path from 'path';
+import http from 'node:http';
+import https from 'node:https';
+import fs from 'node:fs';
+import path from 'node:path';
 
 import { boot } from './app.js';
 

@@ -8,13 +8,15 @@ import {
 import config from '../config/index.js';
 import App from '../app/index.js';
 
-const { typeDefs, resolvers, datasources } = App;
+const { typeDefs, resolvers, datasources, models } = App;
 
 async function apolloLoader({ app }) {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    dataSources: () => ({}),
+    dataSources: () => ({
+      UserAccountData: new datasources.UserAccount(models.UserAccount),
+    }),
     context: async ({ req, res }) => {
       if (req) {
         return { req, res };
