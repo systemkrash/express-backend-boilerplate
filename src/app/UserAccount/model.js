@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
+import hidden from 'mongoose-hidden';
 
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -89,8 +90,32 @@ userAccountSchema.methods.generateEmailVerificationToken = function () {
   );
 };
 
+userAccountSchema.methods.validatePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
+
+userAccountSchema.statics.findByLogin = async function (email) {
+  const userAccount = await this.findOne({ email });
+
+  return userAccount;
+};
+
+userAccountSchema.statics.verifyEmail = async function (verification_token) {
+  try {
+    const verificationToken = jwt.verify(
+      verification_token,
+      config.emailVerificationToken.secret
+    );
+
+    return verificationToken;
+  } catch (e) {
+    throw new EmailVerificationTokenError('Verification token expired');
+  }
+};
+
 userAccountSchema.plugin(paginate);
 userAccountSchema.plugin(aggregatePaginate);
+userAccountSchema.plugin(hidden());
 
 const UserAccount = model('UserAccount', userAccountSchema);
 

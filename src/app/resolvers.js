@@ -7,6 +7,10 @@ import {
   URLResolver,
 } from 'graphql-scalars';
 
+import Auth from './Auth/index.js';
+import AuthToken from './AuthToken/index.js';
+import UserAccount from './UserAccount/index.js';
+
 const scalarResolver = {
   DateTime: DateTimeResolver,
   Date: DateResolver,
@@ -16,4 +20,9 @@ const scalarResolver = {
   URL: URLResolver,
 };
 
-export default [scalarResolver];
+export default [
+  scalarResolver,
+  Auth.resolver,
+  AuthToken.resolver,
+  UserAccount.resolver,
+];

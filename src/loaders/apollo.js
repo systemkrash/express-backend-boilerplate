@@ -15,6 +15,7 @@ async function apolloLoader({ app }) {
     typeDefs,
     resolvers,
     dataSources: () => ({
+      AuthTokenData: new datasources.AuthToken(models.AuthToken),
       UserAccountData: new datasources.UserAccount(models.UserAccount),
     }),
     context: async ({ req, res }) => {
@@ -31,6 +32,23 @@ async function apolloLoader({ app }) {
         : ApolloServerPluginInlineTraceDisabled(),
     ],
     stopOnTerminationSignals: true,
+    // flatten the data response but will violate the GraphQL Spec
+    // so wrap a comment this is user preference
+    // see http://spec.graphql.org/June2018/#sec-Response-Format
+    // see possible issues on this https://stackoverflow.com/questions/57789077/graphql-just-return-raw-data
+    // formatResponse: (res, context) => {
+    //   if (
+    //     (context.operation.operation === 'query' ||
+    //       context.operation.operation === 'mutation') &&
+    //     context.operationName !== 'IntrospectionQuery'
+    //   ) {
+    //     if (res.data) {
+    //       res.data = res.data[Object.keys(res.data)[0]];
+    //     }
+    //   }
+
+    //   return res;
+    // },
   });
 
   await server.start();

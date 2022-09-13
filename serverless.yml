@@ -1,4 +1,4 @@
-service: face-recognition-auth-api
+service: express-backend-boilerplate
 provider:
   region: ap-southeast-1
   name: aws
@@ -6,7 +6,7 @@ provider:
   runtime: nodejs16.x
 functions:
   api:
-    handler: src/lambda.handler
+    handler: dist/lambda.handler
     events:
       - http:
           path: /{proxy+}

@@ -1,5 +1,9 @@
 import { gql } from 'apollo-server-express';
 
+import Auth from './Auth/index.js';
+import AuthToken from './AuthToken/index.js';
+import UserAccount from './UserAccount/index.js';
+
 const linkTypeDefs = gql`
   scalar DateTime
   scalar Date
@@ -16,4 +20,9 @@ const linkTypeDefs = gql`
     _: Boolean
   }
 `;
-export default [linkTypeDefs];
+export default [
+  linkTypeDefs,
+  Auth.typedef,
+  AuthToken.typedef,
+  UserAccount.typedef,
+];

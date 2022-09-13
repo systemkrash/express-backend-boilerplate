@@ -3,7 +3,7 @@ import { gql } from 'apollo-server-express';
 export default gql`
   extend type Query {
     findUserAccounts: [UserAccount]
-    findByIdUserAccount(id: ID!): UserAccount!
+    findByIdUserAccount(id: ID!): UserAccount
   }
 
   extend type Mutation {
