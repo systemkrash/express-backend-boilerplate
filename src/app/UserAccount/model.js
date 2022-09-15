@@ -35,13 +35,7 @@ const userAccountSchema = new Schema(
       default: 'active',
     },
     reset_password_token: {
-      type: String,
-      validate: [
-        {
-          validator: isJWT,
-          message: 'Not a valid reset password token',
-        },
-      ],
+      type: String
     },
     verification_token: {
       type: String,

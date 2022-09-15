@@ -4,10 +4,12 @@ export default gql`
   extend type Mutation {
     authEmail(email: EmailAddress!, password: String): Token!
 
+    forgotPassword(email: EmailAddress): Boolean!
+
     resetPassword(
       resetToken: JWT!
       password: String!
-      passwordConfirm: String!
+      confirmPassword: String!
     ): Boolean!
   }
 `;

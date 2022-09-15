@@ -1,6 +1,4 @@
-import config from '../config/index.js';
 import mongooseLoader from './mongoose.js';
-import s3Loader from './s3.js';
 import expressLoader from './express.js';
 import apolloLoader from './apollo.js';
 import passportLoader from './passport.js';
@@ -10,9 +8,6 @@ import swaggerLoader from './swagger.js';
 async function init({ expressApp }) {
   const mongodb = await mongooseLoader();
   console.log('MongoDB Connected');
-
-  const s3 = await s3Loader();
-  console.log('File Storage Initialized');
 
   const express = await expressLoader({ app: expressApp });
   console.log('Express Initialized');
@@ -28,7 +23,6 @@ async function init({ expressApp }) {
 
   return {
     mongodb,
-    s3,
     app: express,
     apollo,
     sofa,

@@ -10,6 +10,9 @@ export default {
     region: process.env.AWS_REGION,
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    ses: {
+      region: process.env.AWS_SES_REGION,
+    },
   },
   minio: {
     accessKeyId: process.env.MINIO_ACCESS_KEY_ID,
@@ -58,6 +61,23 @@ export default {
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       redirectUri: process.env.GOOGLE_REDIRECT_URI,
+    },
+  },
+  mail: {
+    type: process.env.MAIL_TYPE,
+    address: {
+      default: process.env.MAIL_ADDRESS_DEFAULT,
+      info: process.env.MAIL_ADDRESS_INFO,
+      noreply: process.env.MAIL_ADDRESS_NOREPLY,
+    },
+    smtp: {
+      host: process.env.MAIL_SMTP_HOST,
+      port: process.env.MAIL_SMTP_PORT,
+      secure: process.env.MAIL_SMTP_SECURE,
+      auth: {
+        user: process.env.MAIL_SMTP_AUTH_USER,
+        pass: process.env.MAIL_SMTP_AUTH_PASS,
+      },
     },
   },
   emailVerificationToken: {

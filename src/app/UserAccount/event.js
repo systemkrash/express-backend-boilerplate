@@ -1,3 +1,4 @@
 export default {
-  USERACCOUNT_TEST: 'USERACCOUNT_TEST',
+  USERACCOUNT_CREATED: 'UserAccount.created',
+  USERACCOUNT_FORGOTPASSWORD: 'UserAccount.ForgotPassword',
 };

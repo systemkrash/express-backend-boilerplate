@@ -6,6 +6,9 @@ import AuthService from '../service.js';
 import UserAccountModel from '../../UserAccount/model.js';
 import AuthTokenService from '../../AuthToken/service.js';
 import AuthTokenModel from '../../AuthToken/model.js';
+import MailService from '../../Mail/service.js';
+import MailerPlugin from '../../../plugins/mailer/index.js';
+import eventEmitter from '../../../utils/eventEmitter.js';
 
 export default new Strategy(
   { usernameField: 'email' },
@@ -42,6 +45,12 @@ export const authenticate = (req, res) => {
         req.clientIp,
         userAccount.id
       );
+
+      // const Mail = new MailService(MailerPlugin);
+
+      // eventEmitter.emit('useraccount.test-email', {
+      //   to: 'melvs.evangelista@gmail.com',
+      // });
 
       return resolve({ token });
     })(req, res);

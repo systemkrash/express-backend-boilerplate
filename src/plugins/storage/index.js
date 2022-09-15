@@ -1,8 +1,8 @@
 import { S3Client } from '@aws-sdk/client-s3';
 
-import config from '../config/index.js';
+import config from '../../config/index.js';
 
-async function S3Loader() {
+async function init() {
   let s3;
 
   if (config.fileStorage === 'minio') {
@@ -29,4 +29,4 @@ async function S3Loader() {
   return s3;
 }
 
-export default S3Loader;
+export default init;
