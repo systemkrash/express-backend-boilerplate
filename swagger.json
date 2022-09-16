@@ -114,6 +114,147 @@
         }
       }
     },
+    "/rest/auth-email": {
+      "post": {
+        "operationId": "authEmail_mutation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "$ref": "#/components/schemas/EmailAddress"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Token"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/auth-register": {
+      "post": {
+        "operationId": "authRegister_mutation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "user": {
+                    "$ref": "#/components/schemas/AuthUserAccount"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserAccount"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/forgot-password": {
+      "post": {
+        "operationId": "forgotPassword_mutation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "$ref": "#/components/schemas/EmailAddress"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/rest/reset-password": {
+      "post": {
+        "operationId": "resetPassword_mutation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "resetToken": {
+                    "$ref": "#/components/schemas/JWT"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "confirmPassword": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "resetToken",
+                  "password",
+                  "confirmPassword"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/rest/refresh-token": {
       "post": {
         "operationId": "refreshToken_mutation",
@@ -307,12 +448,27 @@
       "Mutation": {
         "type": "object",
         "required": [
+          "authEmail",
+          "forgotPassword",
+          "resetPassword",
           "refreshToken",
           "createUserAccount",
           "verifyUserAccountEmail"
         ],
         "properties": {
           "_": {
+            "type": "boolean"
+          },
+          "authEmail": {
+            "$ref": "#/components/schemas/Token"
+          },
+          "authRegister": {
+            "$ref": "#/components/schemas/UserAccount"
+          },
+          "forgotPassword": {
+            "type": "boolean"
+          },
+          "resetPassword": {
             "type": "boolean"
           },
           "refreshToken": {
@@ -329,6 +485,29 @@
           },
           "deleteUserAccounts": {
             "type": "boolean"
+          }
+        }
+      },
+      "AuthUserAccount": {
+        "type": "object",
+        "required": [
+          "email",
+          "password",
+          "confirmPassword",
+          "role"
+        ],
+        "properties": {
+          "email": {
+            "type": "object"
+          },
+          "password": {
+            "type": "string"
+          },
+          "confirmPassword": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
           }
         }
       },

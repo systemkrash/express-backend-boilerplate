@@ -2,7 +2,6 @@ import { readFile } from 'node:fs/promises';
 import swaggerUi from 'swagger-ui-express';
 
 import config from '../config/index.js';
-import { openApi } from './sofa.js';
 
 async function swaggerLoader({ app }) {
   if (config.environment !== 'production') {
@@ -10,7 +9,7 @@ async function swaggerLoader({ app }) {
       await readFile(new URL('../../swagger.json', import.meta.url))
     );
 
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
+    app.use('/rest-docs', swaggerUi.serve, swaggerUi.setup(swaggerFile));
   }
 }
 

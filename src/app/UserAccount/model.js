@@ -1,12 +1,11 @@
 import mongoose from 'mongoose';
 import paginate from 'mongoose-paginate-v2';
 import aggregatePaginate from 'mongoose-aggregate-paginate-v2';
-import hidden from 'mongoose-hidden';
+import uniqueValidator from 'mongoose-unique-validator';
 
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import isEmail from 'validator/lib/isEmail.js';
-import isJWT from 'validator/lib/isJWT.js';
 
 import config from '../../config/index.js';
 
@@ -35,7 +34,7 @@ const userAccountSchema = new Schema(
       default: 'active',
     },
     reset_password_token: {
-      type: String
+      type: String,
     },
     verification_token: {
       type: String,
@@ -109,7 +108,7 @@ userAccountSchema.statics.verifyEmail = async function (verification_token) {
 
 userAccountSchema.plugin(paginate);
 userAccountSchema.plugin(aggregatePaginate);
-userAccountSchema.plugin(hidden());
+userAccountSchema.plugin(uniqueValidator);
 
 const UserAccount = model('UserAccount', userAccountSchema);
 

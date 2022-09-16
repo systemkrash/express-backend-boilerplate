@@ -10,6 +10,7 @@ import eventEmitter from '../../utils/eventEmitter.js';
 export default {
   Mutation: {
     authEmail: combineResolvers(authEmail),
+    authRegister: combineResolvers(authRegister),
     forgotPassword: combineResolvers(forgotPassword),
     resetPassword: combineResolvers(resetPassword),
   },
@@ -28,6 +29,29 @@ export async function authEmail(parent, { email, password }, { req, res }) {
 
   try {
     return await authenticateByEmail(req, res);
+  } catch (ex) {
+    throw ex;
+  }
+}
+
+export async function authRegister(
+  parent,
+  { user },
+  { dataSources: { UserAccountData } }
+) {
+  const Auth = new AuthService(UserAccountData.model);
+
+  try {
+    new MailService(mailer);
+    const userAccount = await Auth.createUserAccount(user);
+
+    // emit an event to send verification email
+    eventEmitter.emit(UserAccountEvent.USERACCOUNT_CREATED, {
+      to: userAccount.email,
+      verificationToken: userAccount.verification_token,
+    });
+
+    return userAccount;
   } catch (ex) {
     throw ex;
   }
@@ -66,7 +90,11 @@ export async function resetPassword(
   try {
     const Auth = new AuthService(UserAccountData.model);
 
-    const userAccount = await Auth.resetPassword(resetToken, password, confirmPassword);
+    const userAccount = await Auth.resetPassword(
+      resetToken,
+      password,
+      confirmPassword
+    );
 
     console.log(userAccount);
 

@@ -5,6 +5,7 @@ import config from '../../config/index.js';
 import EmailUserAccountNotExistsError from '../Errors/EmailUserAccountNotExistsError.js';
 import PasswordsMismatchError from '../Errors/PasswordsMismatchError.js';
 import UserAccountNotExistsError from '../Errors/UserAccountNotExistsError.js';
+import UniqueFieldError from '../Errors/UniqueFieldError.js';
 
 class AuthService {
   constructor(UserAccountModel) {
@@ -31,6 +32,18 @@ class AuthService {
     return userAccount;
   }
 
+  async createUserAccount(user) {
+    try {
+      const userAccount = new this.UserAccountModel(user);
+
+      await userAccount.save();
+
+      return userAccount;
+    } catch (ex) {
+      throw new UniqueFieldError(ex);
+    }
+  }
+
   async createResetPasswordToken(payload) {
     return jwt.sign(payload, config.auth.jwt.passwordReset.secret, {
       expiresIn: config.auth.jwt.passwordReset.expiresIn,
@@ -54,7 +67,6 @@ class AuthService {
       const resetPasswordToken = await this.createResetPasswordToken(payload);
       userAccount.reset_password_token = resetPasswordToken;
       await userAccount.save();
-      console.log(userAccount.email);
 
       return {
         email: userAccount.email,
@@ -78,7 +90,9 @@ class AuthService {
         throw new PasswordsMismatchError('Passwords mismatch');
       }
 
-      const userAccount = await this.UserAccountModel.findById(token.useraccount_id).exec();
+      const userAccount = await this.UserAccountModel.findById(
+        token.useraccount_id
+      ).exec();
 
       if (!userAccount) {
         throw new UserAccountNotExistsError(
@@ -86,7 +100,7 @@ class AuthService {
         );
       }
 
-      userAccount.reset_password_token = "";
+      userAccount.reset_password_token = '';
       userAccount.password = password;
 
       await userAccount.save();
